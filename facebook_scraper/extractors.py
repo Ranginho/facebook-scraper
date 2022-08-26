@@ -9,9 +9,9 @@ from typing import Any, Dict, Optional
 from urllib.parse import parse_qs, urlparse
 from tqdm.auto import tqdm
 
-from . import utils, exceptions
-from .constants import FB_BASE_URL, FB_MOBILE_BASE_URL, FB_W3_BASE_URL
-from .fb_types import Options, Post, RawPost, RequestFunction, Response, URL
+import utils, exceptions
+from constants import FB_BASE_URL, FB_MOBILE_BASE_URL, FB_W3_BASE_URL
+from fb_types import Options, Post, RawPost, RequestFunction, Response, URL
 
 
 try:

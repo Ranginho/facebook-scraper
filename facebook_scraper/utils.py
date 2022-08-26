@@ -13,7 +13,7 @@ from requests_html import DEFAULT_URL, Element, PyQuery
 import json
 import traceback
 
-from . import exceptions
+import exceptions
 import logging
 import time
 

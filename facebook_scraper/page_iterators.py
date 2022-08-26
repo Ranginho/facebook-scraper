@@ -8,11 +8,11 @@ import time
 from requests.exceptions import HTTPError
 import warnings
 
-from . import utils
-from .constants import FB_MOBILE_BASE_URL, FB_MBASIC_BASE_URL
+import utils
+from constants import FB_MOBILE_BASE_URL, FB_MBASIC_BASE_URL
 
-from .fb_types import URL, Page, RawPage, RequestFunction, Response
-from . import exceptions
+from fb_types import URL, Page, RawPage, RequestFunction, Response
+import exceptions
 
 
 logger = logging.getLogger(__name__)

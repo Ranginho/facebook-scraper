@@ -18,9 +18,8 @@ warnings.filterwarnings("ignore")
 ACCOUNTS_PATH = "accounts.xlsx"
 profile_ids = read_accounts(ACCOUNTS_PATH)
 
-# musha - ("iakobmoseshvili@proton.me", "Nn123456")
-facebook_accounts = cycle([("natovachnadze29@gmail.com", "Nn123456")])
-len_accounts = 2
+facebook_accounts = cycle([])
+len_accounts = 6
 
 sleep_times = generate_sleep_time_dist()
 
@@ -82,10 +81,10 @@ def profile_scraper(profile_ids: list,
             try:
                 print(f"profile {profile_id} scrapping posts ....")
 
-                curr_fb_ccount = next(facebook_accounts)
+                curr_fb_account = next(facebook_accounts)
                 curr_profile_posts = get_posts(
                     account=profile_id,
-                    credentials=curr_fb_ccount,
+                    credentials=curr_fb_account,
                     start_url=search_page_persistor.get_current_search_page(),
                     request_url_callback=search_page_persistor.set_search_page,
                     options={"allow_extra_requests": True,
@@ -97,6 +96,7 @@ def profile_scraper(profile_ids: list,
                     headers=headers)
 
                 success, num_posts = scrape_posts(curr_profile_posts, profiles_dir, profile_id, num_posts)
+
                 if success or num_posts > 150:
                     break
 
@@ -111,11 +111,16 @@ def profile_scraper(profile_ids: list,
                 for _ in range(len_accounts):
                     accounts.append(next(facebook_accounts))
 
-                accounts.remove(curr_fb_ccount)
+                accounts.remove(curr_fb_account)
+                print("removed account: ", curr_fb_account)
                 len_accounts -= 1
                 facebook_accounts = cycle(accounts)
 
-                time.sleep(1)
+                if len(accounts) <= 3:
+                    return
+
+                print("sleeping for 2 hours")
+                time.sleep(7200)
 
         print(f"profile {profile_id} scrapping posts DONE")
         time.sleep(random.choice(sleep_times))

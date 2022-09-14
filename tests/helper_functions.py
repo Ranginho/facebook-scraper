@@ -56,7 +56,7 @@ def save_profile_info(profile_info, profile_dir):
         
 # generate random numbers for sleep after every request    
 # TODO: change low_out, high_out
-def generate_sleep_time_dist(low=100, high=200, size=1000, low_out=500, hight_out=600, size_out_pct=0.01):
+def generate_sleep_time_dist(low=500, high=1000, size=1000, low_out=5000, hight_out=6000, size_out_pct=0.01):
     size_out = int(size * size_out_pct)
 
     sleep_times = np.round(np.random.uniform(low=low, high=high, size=size))

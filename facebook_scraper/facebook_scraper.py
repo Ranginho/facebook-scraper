@@ -13,6 +13,7 @@ import os
 
 from requests import RequestException
 from requests_html import HTMLSession
+from scrapingbee import ScrapingBeeClient
 
 import utils
 from constants import (
@@ -867,7 +868,15 @@ class FacebookScraper:
                 kwargs.pop("post")
                 response = self.session.post(url=url, **kwargs)
             else:
-                response = self.session.get(url=url, **self.requests_kwargs, **kwargs)
+                # response = self.session.get(url=url, **self.requests_kwargs, **kwargs)
+                response = self.session.get(url=url,
+                    proxies={
+                        'api_key': '884CDY6Q0FRHALKNBR3LII4BPIBJ7LRPPB84PAZ52OBX7YDKMFVZJ2QJHZ2XUFV8NUGCLJY9KZKJI3OU',
+                        'url': 'https://app.scrapingbee.com/api/v1/',
+                    }, **self.requests_kwargs, **kwargs)
+                # client = ScrapingBeeClient(
+                #     api_key='884CDY6Q0FRHALKNBR3LII4BPIBJ7LRPPB84PAZ52OBX7YDKMFVZJ2QJHZ2XUFV8NUGCLJY9KZKJI3OU')
+                # response = client.get(url = url)
             DEBUG = False
             if DEBUG:
                 for filename in os.listdir("."):
@@ -1052,7 +1061,6 @@ class FacebookScraper:
                 for post_element in page:
                     try:
                         post = extract_post_fn(post_element, options=options, request_fn=self.get)
-
                         if remove_source:
                             post.pop("source", None)
 

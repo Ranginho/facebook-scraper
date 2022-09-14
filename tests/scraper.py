@@ -18,8 +18,18 @@ warnings.filterwarnings("ignore")
 ACCOUNTS_PATH = "accounts.xlsx"
 profile_ids = read_accounts(ACCOUNTS_PATH)
 
-facebook_accounts = cycle([])
-len_accounts = 6
+'''
+("mamukagrigolia16@gmail.com", "mamukaN123"),
+                            ("tocomaglakelidze@gmail.com", "tocoN123"),
+                            ("qvilitaiaalex@gmail.com", "alexN123")
+'''
+'''
+("jarjimagla@gmail.com", "Nn123456"),
+                            ("tocomaglakelidze@gmail.com", "tocoN123"),
+                            ("qvilitaiaalex@gmail.com", "alexN123")
+'''
+facebook_accounts = cycle([("jarjimagla@gmail.com", "Nn123456")])
+len_accounts = 1
 
 sleep_times = generate_sleep_time_dist()
 
@@ -30,12 +40,13 @@ last_post_date = latest_post_date = datetime.today() - timedelta(days=180)
 
 
 def scrape_posts(curr_profile_posts, profiles_dir, profile_id, num_posts):
-    for post in curr_profile_posts:
-
+    for i, post in enumerate(curr_profile_posts):
+        if i == 6:
+            return True, num_posts
         if post['shared_post_id'] is None and post['video'] is None and post['image'] is not None and \
                 (post['shared_text'] is None or post['shared_text'] == ''):
             save_image(post, profiles_dir / profile_id / "images")
-
+        print(post['text'])
         save_post(post, profiles_dir / profile_id / "posts")
 
         if (post["reactors"] is not None) and (post["reaction_count"] - len(post["reactors"]) > 10):
@@ -92,10 +103,13 @@ def profile_scraper(profile_ids: list,
                              "reactors": True,
                              "sharers": True},
                     timeout=120,
-                    latest_date=last_post_date,
+                    # latest_date=last_post_date,
                     headers=headers)
 
                 success, num_posts = scrape_posts(curr_profile_posts, profiles_dir, profile_id, num_posts)
+
+                if num_posts == 0:
+                    raise ZeroDivisionError  # just for testing sth
 
                 if success or num_posts > 150:
                     break
@@ -116,7 +130,7 @@ def profile_scraper(profile_ids: list,
                 len_accounts -= 1
                 facebook_accounts = cycle(accounts)
 
-                if len(accounts) <= 3:
+                if len(accounts) < 3:
                     return
 
                 print("sleeping for 2 hours")

@@ -815,6 +815,8 @@ class PostExtractor:
             reaction_url = f'https://m.facebook.com/ufi/reaction/profile/browser/?ft_ent_identifier={post_id}'
             logger.debug(f"Fetching {reaction_url}")
             response = self.request(reaction_url)
+            if response == "temp ban":
+                return "temp ban"
             if not reactions or force_parse_HTML:
                 reactions = {}
                 reaction_count = 0
